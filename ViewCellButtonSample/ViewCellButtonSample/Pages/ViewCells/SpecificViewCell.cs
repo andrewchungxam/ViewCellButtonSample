@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-//using ViewCellButtonSample.Helpers;
 using ViewCellButtonSample.Models;
 using ViewCellButtonSample.ViewModels;
 using Xamarin.Forms;
@@ -18,11 +17,8 @@ namespace ViewCellButtonSample.Pages.ViewCells
 
         Label testNumber;
 
-        //public SpecificViewCell(MainListViewPage underlyingMainListViewPage)
         public SpecificViewCell()
         {
-            //var model = BindingContext as UnderlyingData;
-            //
             //TEST-BUTTON
             var testButton = new Button()
             {
@@ -32,50 +28,26 @@ namespace ViewCellButtonSample.Pages.ViewCells
             testNumber = new Label() { };
 
             //TEST-BUTTON
-            testButton.SetBinding(Button.CommandParameterProperty, new Binding("."));
-            //            testButton.SetBinding(Button.CommandProperty, new Binding("BindingContext.TestButtonClickCommand", source: underlyingMainListViewPage));
-            testButton.SetBinding(Button.CommandProperty, new Binding("BindingContext.TestButtonClickCommand", source: (MainListViewViewModel)ParentViewModel));
-            testNumber.SetBinding(Label.TextProperty, nameof(UnderlyingData.TheChangingString), BindingMode.Default);
 
-            //testNumber.SetBinding(Label.TextProperty, nameof(UnderlyingData.TheChangingString), BindingMode.OneWay);
+            //THIS COMMANDPROPERTIES ARE OPTIONAL - USE THESE IS YOU WANT TO USE THE COMMANDING PATTERN
+            testButton.SetBinding(Button.CommandParameterProperty, new Binding("."));
+            testButton.SetBinding(Button.CommandProperty, new Binding("BindingContext.TestButtonClickCommand", source: (MainListViewViewModel)ParentViewModel));
+
+
+            testNumber.SetBinding(Label.TextProperty, nameof(UnderlyingData.TheChangingString), BindingMode.Default);
 
             testButton.Clicked += (sender, e) =>
             {
                 var button = (Button)sender;
-                //var prayerRequest = (ViewCellButtonSample.Models.UnderlyingData)button.CommandParameter;
-
                 string newString = "2nd string";
 
-                //ID OF THE DATA IN THE CELL
                 var cellBindingContext = (ViewCellButtonSample.Models.UnderlyingData)this.BindingContext;
                 if (cellBindingContext != null)
                 {
                     cellBindingContext.TheChangingString = "new and updated";
-                    //ParentViewModel.ReplaceDataItem(cellBindingContext);
                     ParentViewModel.ResetDataSource();
                 }
 
-
-
-
-
-
-
-                //int cellUnderlyingDataId = cellBindingContext.Id;
-
-                //var testCollectionOfPrayers = underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData;
-
-                //ObservableCollection<ViewCellButtonSample.Models.UnderlyingData> tempObservableCollection = underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData; //.Where(x.Id == cellPrayerRequestId);
-                //var specificUnderlyingData = tempObservableCollection.FirstOrDefault(x => x.Id == cellUnderlyingDataId);
-                //if (specificUnderlyingData != null)
-                //{
-                //    specificUnderlyingData.TheChangingString = "new and updated";
-                //}
-
-                //underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData = tempObservableCollection;
-
-                ////DONT NEED THE BELOW - BUT LEAVING IT FOR GOOD MEASURE
-                //underlyingMainListViewPage.MyViewModel._observableCollectionOfUnderlyingData = tempObservableCollection;
             };
 
 

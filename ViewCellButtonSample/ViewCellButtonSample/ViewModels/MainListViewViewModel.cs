@@ -23,12 +23,6 @@ namespace ViewCellButtonSample.ViewModels
             set { SetProperty(ref _theChangingString, value); }
         }
 
-        //public ObservableCollection<UnderlyingData> _observableCollectionOfUnderlyingData;
-        //public ObservableCollection<UnderlyingData> ObservableCollectionOfUnderlyingData
-        //{
-        //    get { return _observableCollectionOfUnderlyingData; }
-        //    set { SetProperty(ref _observableCollectionOfUnderlyingData, value); }
-        //}
         public ResetableObservableCollection<UnderlyingData> MyObservableCollectionOfUnderlyingData { 
             get; 
             set; 
@@ -36,12 +30,7 @@ namespace ViewCellButtonSample.ViewModels
 
         public void ResetDataSource()//(UnderlyingData oldData, UnderlyingData new Data)
         {
-            //THIS CODE IS DONE FOR YOU BY XAMARIN FORMS
-            //var originalItem = ObservableCollectionOfUnderlyingData.FirstOrDefault(i => i.Id == dataToReplace.Id);
-            //if (originalItem is null) return;
-            //var index = ObservableCollectionOfUnderlyingData.IndexOf(originalItem);
-            //ObservableCollectionOfUnderlyingData[index] = dataToReplace;
-
+          
             MyObservableCollectionOfUnderlyingData.Reset();
         }
 
@@ -52,14 +41,7 @@ namespace ViewCellButtonSample.ViewModels
             SpecificViewCell.ParentViewModel = this;
 
             var list = new List<UnderlyingData> { };
-            //list = App.PrayerSQLDatabase.GetAllDogs();
             list = App.ListOfUnderlyingData;
-
-
-            //if(list.Count()==0)
-            //{
-            //_observableCollectionOfUnderlyingData = new ObservableCollection<UnderlyingData>();
-
 
             foreach (var underlyingData in list)
                 MyObservableCollectionOfUnderlyingData.Add(underlyingData);
