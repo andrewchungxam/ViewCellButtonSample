@@ -19,11 +19,16 @@ namespace ViewCellButtonSample.Pages
         {
             _underlyingDataListPage = new ListView();
 
+            //REMOVE REFERENCE TO LISTVIEWMODEL
+            //_underlyingDataListPage.ItemTemplate = new DataTemplate(() => {
+            //    return new SpecificViewCell(this);
+            //});
+
             _underlyingDataListPage.ItemTemplate = new DataTemplate(() => {
-                return new SpecificViewCell(this);
+                return new SpecificViewCell();
             });
 
-            _underlyingDataListPage.SetBinding(ListView.ItemsSourceProperty, nameof(MyViewModel.ObservableCollectionOfUnderlyingData));
+            _underlyingDataListPage.SetBinding(ListView.ItemsSourceProperty, nameof(MyViewModel.MyObservableCollectionOfUnderlyingData));
 
             _underlyingDataListPage.HasUnevenRows = true;
 

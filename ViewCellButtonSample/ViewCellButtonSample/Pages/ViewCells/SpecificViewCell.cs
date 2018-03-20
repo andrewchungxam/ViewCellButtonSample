@@ -14,47 +14,68 @@ namespace ViewCellButtonSample.Pages.ViewCells
 {
     public class SpecificViewCell : ViewCell
     {
-        public SpecificViewCell(MainListViewPage underlyingMainListViewPage)
-        {
-            var model = BindingContext as UnderlyingData;
+        public static MainListViewViewModel ParentViewModel;
 
+        Label testNumber;
+
+        //public SpecificViewCell(MainListViewPage underlyingMainListViewPage)
+        public SpecificViewCell()
+        {
+            //var model = BindingContext as UnderlyingData;
+            //
             //TEST-BUTTON
             var testButton = new Button()
             {
                 Text = "Test +"
             };
 
-            var testNumber = new Label() { };
+            testNumber = new Label() { };
 
             //TEST-BUTTON
             testButton.SetBinding(Button.CommandParameterProperty, new Binding("."));
-            testButton.SetBinding(Button.CommandProperty, new Binding("BindingContext.TestButtonClickCommand", source: underlyingMainListViewPage));
-            testNumber.SetBinding(Label.TextProperty, nameof(model.TheChangingString), BindingMode.Default);
+            //            testButton.SetBinding(Button.CommandProperty, new Binding("BindingContext.TestButtonClickCommand", source: underlyingMainListViewPage));
+            testButton.SetBinding(Button.CommandProperty, new Binding("BindingContext.TestButtonClickCommand", source: (MainListViewViewModel)ParentViewModel));
+            testNumber.SetBinding(Label.TextProperty, nameof(UnderlyingData.TheChangingString), BindingMode.Default);
+
+            //testNumber.SetBinding(Label.TextProperty, nameof(UnderlyingData.TheChangingString), BindingMode.OneWay);
 
             testButton.Clicked += (sender, e) =>
             {
                 var button = (Button)sender;
-                var prayerRequest = (ViewCellButtonSample.Models.UnderlyingData)button.CommandParameter;
+                //var prayerRequest = (ViewCellButtonSample.Models.UnderlyingData)button.CommandParameter;
 
                 string newString = "2nd string";
 
                 //ID OF THE DATA IN THE CELL
                 var cellBindingContext = (ViewCellButtonSample.Models.UnderlyingData)this.BindingContext;
-                int cellUnderlyingDataId = cellBindingContext.Id;
-
-                var testCollectionOfPrayers = underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData;
-
-                ObservableCollection<ViewCellButtonSample.Models.UnderlyingData> tempObservableCollection = underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData; //.Where(x.Id == cellPrayerRequestId);
-                var specificUnderlyingData = tempObservableCollection.FirstOrDefault(x => x.Id == cellUnderlyingDataId);
-                if (specificUnderlyingData != null)
+                if (cellBindingContext != null)
                 {
-                    specificUnderlyingData.TheChangingString = "new and updated";
+                    cellBindingContext.TheChangingString = "new and updated";
+                    //ParentViewModel.ReplaceDataItem(cellBindingContext);
+                    ParentViewModel.ResetDataSource();
                 }
 
-                underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData = tempObservableCollection;
 
-                //DONT NEED THE BELOW - BUT LEAVING IT FOR GOOD MEASURE
-                underlyingMainListViewPage.MyViewModel._observableCollectionOfUnderlyingData = tempObservableCollection;
+
+
+
+
+
+                //int cellUnderlyingDataId = cellBindingContext.Id;
+
+                //var testCollectionOfPrayers = underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData;
+
+                //ObservableCollection<ViewCellButtonSample.Models.UnderlyingData> tempObservableCollection = underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData; //.Where(x.Id == cellPrayerRequestId);
+                //var specificUnderlyingData = tempObservableCollection.FirstOrDefault(x => x.Id == cellUnderlyingDataId);
+                //if (specificUnderlyingData != null)
+                //{
+                //    specificUnderlyingData.TheChangingString = "new and updated";
+                //}
+
+                //underlyingMainListViewPage.MyViewModel.ObservableCollectionOfUnderlyingData = tempObservableCollection;
+
+                ////DONT NEED THE BELOW - BUT LEAVING IT FOR GOOD MEASURE
+                //underlyingMainListViewPage.MyViewModel._observableCollectionOfUnderlyingData = tempObservableCollection;
             };
 
 
@@ -80,9 +101,18 @@ namespace ViewCellButtonSample.Pages.ViewCells
             #endregion
 
         }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+
+            var item = BindingContext as UnderlyingData;
+            if (item is null) return;
+
+            testNumber.Text = item?.TheChangingString ?? "Some Error Happened";
+        }
     }
 }
-
 
 
 
